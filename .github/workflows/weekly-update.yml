@@ -1,8 +1,8 @@
 name: Weekly Update
 
 on:
-  schedule:
-    - cron: '0 6 * * TUE'
+  #schedule:
+  #  - cron: '0 6 * * TUE'
   workflow_dispatch:
 
 jobs:
