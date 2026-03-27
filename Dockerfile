@@ -40,6 +40,7 @@ RUN apt-get update && \
     python3-hvac \
     python3-pip \
     python3-semver \
+    rsync \
     s3cmd \
     strace \
     sudo \
