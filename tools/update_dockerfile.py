@@ -2,10 +2,7 @@ import re
 import requests
 
 urls = {
-    "ANSIBLE_VERSION": "https://pypi.org/pypi/ansible/json",
-    "GOVC_VERSION": "https://api.github.com/repos/vmware/govmomi/releases/latest",
-    "PACKER_VERSION": "https://api.github.com/repos/hashicorp/packer/releases/latest",
-    "TERRAFORM_VERSION": "https://api.github.com/repos/hashicorp/terraform/releases/latest",
+    "ANSIBLE_CORE_VERSION": "https://pypi.org/pypi/ansible-core/json",
     "OPENTOFU_VERSION": "https://api.github.com/repos/opentofu/opentofu/releases/latest",
     "KUBECTL_VERSION": "https://api.github.com/repos/kubernetes/kubernetes/releases/latest",
     "HELM_VERSION": "https://api.github.com/repos/helm/helm/releases/latest",
@@ -16,7 +13,7 @@ urls = {
 def get_latest_version(url, version_key):
     response = requests.get(url, timeout=30)
     data = response.json()
-    if version_key == "ANSIBLE_VERSION":
+    if version_key == "ANSIBLE_CORE_VERSION":
         return data["info"]["version"]
     return data["tag_name"]
 
@@ -28,8 +25,6 @@ with open("Dockerfile", "r", encoding="utf8") as file:
 
 updated = False
 for key, version in latest_versions.items():
-    if key in ["PACKER_VERSION", "TERRAFORM_VERSION"]:
-        version = version.lstrip('v')
     new_content = re.sub(f'{key}="[^"]+"', f'{key}="{version}"', dockerfile_content)
     if new_content != dockerfile_content:
         updated = True

@@ -10,9 +10,6 @@ Docker image containing multiple automation tools.
 | Tool      | Project Link                             |
 |:----------|:-----------------------------------------|
 | Ansible   | https://github.com/ansible/ansible       |
-| GOVC      | https://github.com/vmware/govmomi        |
-| Packer    | https://github.com/hashicorp/packer      |
-| Terraform | https://github.com/hashicorp/terraform   |
 | OpenTofu  | https://github.com/opentofu/opentofu     |
 | Kubectl   | https://github.com/kubernetes/kubernetes |
 | Helm      | https://github.com/helm/helm             |
