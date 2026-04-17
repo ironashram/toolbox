@@ -1,4 +1,4 @@
-FROM ubuntu:noble
+FROM alpine:3.22
 
 ARG ANSIBLE_VERSION="13.5.0"
 ARG GOVC_VERSION="v0.53.0"
@@ -8,49 +8,49 @@ ARG OPENTOFU_VERSION="v1.11.6"
 ARG KUBECTL_VERSION="v1.35.4"
 ARG HELM_VERSION="v4.1.4"
 ARG K3SUP_VERSION="0.13.12"
-ARG AWSCLI_VERSION="2.22.35"
 
-ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONDONTWRITEBYTECODE=True
 ENV PATH="$PATH:/root/.local/bin"
 ENV TZ=UTC
 
-RUN apt-get update && \
-    apt-get install -y \
+RUN apk add --no-cache \
     atop \
+    aws-cli \
     bash \
     bash-completion \
-    conntrack \
+    bind-tools \
+    ca-certificates \
+    conntrack-tools \
     curl \
-    dnsutils \
     dumb-init \
     git \
     htop \
-    inetutils-ping \
+    inetutils-telnet \
     iproute2 \
     iptables \
+    iputils \
     jq \
-    linux-tools-common \
     make \
-    ncat \
     net-tools \
+    nmap-ncat \
     openssh-client \
     openssl \
+    perf \
     pipx \
-    python3-hvac \
-    python3-pip \
-    python3-semver \
+    py3-pip \
+    py3-semver \
+    python3 \
     rsync \
     s3cmd \
     strace \
     sudo \
     tcpdump \
-    telnet \
+    tzdata \
     unzip \
     vim \
     wget
 
-RUN pip install --break-system-packages python-hcl2
+RUN pip install --break-system-packages hvac python-hcl2
 
 RUN pipx ensurepath \
     && pipx install --include-deps ansible==${ANSIBLE_VERSION} \
@@ -60,7 +60,8 @@ RUN curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 \
     | bash -s -- -v ${HELM_VERSION}
 
 RUN curl -L https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl \
-    -o /usr/local/bin/kubectl
+    -o /usr/local/bin/kubectl \
+    && chmod +x /usr/local/bin/kubectl
 
 RUN curl -L -o - https://github.com/vmware/govmomi/releases/download/${GOVC_VERSION}/govc_$(uname -s)_$(uname -m).tar.gz \
     | tar -C /usr/local/bin -xvzf - govc
@@ -77,18 +78,9 @@ RUN OPENTOFU_VERSION_STRIPPED=$(echo ${OPENTOFU_VERSION} | sed 's/^v//') \
     && rm tofu_${OPENTOFU_VERSION_STRIPPED}_linux_amd64.zip \
     && chmod +x /usr/local/bin/tofu
 
-RUN curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWSCLI_VERSION}.zip -o awscliv2.zip \
-    && unzip awscliv2.zip \
-    && ./aws/install \
-    && rm -rf aws awscliv2.zip
-
 RUN curl -sSL https://github.com/alexellis/k3sup/releases/download/${K3SUP_VERSION}/k3sup > k3sup \
     && chmod +x k3sup \
     && mv k3sup /usr/bin/k3sup
-
-RUN apt-get clean autoclean; \
-    apt-get autoremove --yes; \
-    rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["/bin/bash"]
