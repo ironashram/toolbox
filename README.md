@@ -13,7 +13,6 @@ Docker image containing multiple automation tools.
 | OpenTofu  | https://github.com/opentofu/opentofu     |
 | Kubectl   | https://github.com/kubernetes/kubernetes |
 | Helm      | https://github.com/helm/helm             |
-| K3sup     | https://github.com/alexellis/k3sup       |
 
 
 ## Usage
