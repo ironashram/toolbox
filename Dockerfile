@@ -1,10 +1,9 @@
-FROM alpine:3.22
+FROM alpine:3.23
 
 ARG ANSIBLE_CORE_VERSION="2.20.4"
 ARG OPENTOFU_VERSION="v1.11.6"
 ARG KUBECTL_VERSION="v1.35.4"
 ARG HELM_VERSION="v4.1.4"
-ARG K3SUP_VERSION="0.13.12"
 
 ENV PYTHONDONTWRITEBYTECODE=True
 ENV PIP_NO_CACHE_DIR=1
@@ -64,9 +63,6 @@ RUN OPENTOFU_VERSION_STRIPPED=$(echo ${OPENTOFU_VERSION} | sed 's/^v//') \
     && rm tofu_${OPENTOFU_VERSION_STRIPPED}_linux_amd64.zip \
     && chmod +x /usr/local/bin/tofu
 
-RUN curl -sSL https://github.com/alexellis/k3sup/releases/download/${K3SUP_VERSION}/k3sup > k3sup \
-    && chmod +x k3sup \
-    && mv k3sup /usr/bin/k3sup
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["/bin/bash"]
