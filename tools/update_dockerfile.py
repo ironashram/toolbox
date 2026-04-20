@@ -5,8 +5,7 @@ urls = {
     "ANSIBLE_CORE_VERSION": "https://pypi.org/pypi/ansible-core/json",
     "OPENTOFU_VERSION": "https://api.github.com/repos/opentofu/opentofu/releases/latest",
     "KUBECTL_VERSION": "https://api.github.com/repos/kubernetes/kubernetes/releases/latest",
-    "HELM_VERSION": "https://api.github.com/repos/helm/helm/releases/latest",
-    "K3SUP_VERSION": "https://api.github.com/repos/alexellis/k3sup/releases/latest"
+    "HELM_VERSION": "https://api.github.com/repos/helm/helm/releases/latest"
 }
 
 
