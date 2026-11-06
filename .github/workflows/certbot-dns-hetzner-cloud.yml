@@ -1,0 +1,43 @@
+name: Certbot DNS Hetzner Cloud Image Build
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "certbot-dns-hetzner-cloud/**"
+      - ".github/workflows/certbot-dns-hetzner-cloud.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Read certbot version
+        id: version
+        run: echo "version=$(sed -n 's|^FROM certbot/certbot:v||p' certbot-dns-hetzner-cloud/Dockerfile)" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish image to GHCR
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
+        with:
+            context: certbot-dns-hetzner-cloud
+            provenance: false
+            push: true
+            tags: |
+              ghcr.io/${{ github.repository_owner }}/certbot-dns-hetzner-cloud:${{ steps.version.outputs.version }}
+              ghcr.io/${{ github.repository_owner }}/certbot-dns-hetzner-cloud:latest

@@ -9,7 +9,8 @@ ENV PYTHONDONTWRITEBYTECODE=True
 ENV PIP_NO_CACHE_DIR=1
 ENV TZ=UTC
 
-RUN apk add --no-cache \
+RUN apk upgrade --no-cache \
+    && apk add --no-cache \
     aws-cli \
     bash \
     bash-completion \

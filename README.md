@@ -1,4 +1,4 @@
-[![Weekly Update](https://github.com/ironashram/toolbox/actions/workflows/weekly-update.yml/badge.svg)](https://github.com/ironashram/toolbox/actions/workflows/weekly-update.yml)
+[![Update](https://github.com/ironashram/toolbox/actions/workflows/update.yml/badge.svg)](https://github.com/ironashram/toolbox/actions/workflows/update.yml)
 [![Docker Image Build](https://github.com/ironashram/toolbox/actions/workflows/docker-image.yml/badge.svg)](https://github.com/ironashram/toolbox/actions/workflows/docker-image.yml)
 
 # ToolBox
